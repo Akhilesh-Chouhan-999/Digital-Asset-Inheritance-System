@@ -1,22 +1,30 @@
-import app from "./app.js";
-import connectDB from "./config/db.config.js";
-import { PORT } from "./config/env.js";
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import compression from 'compression';
+import { configDotenv } from 'dotenv';
 
 
-const startServer = async () => {
+const app = express();
 
-  try {
 
-    connectDB();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+}));
+app.use(morgan('dev'));
+app.use(compression());
+configDotenv();
 
-    app.listen(PORT, () => {
-      console.log(`Server is listening on PORT ${PORT}`);
-    });
 
-  } catch (error) {
-    console.log('Server Startup Failed ');
-    process.exit();
-  }
-}
+app.get('/ping', (req, res) => {
 
-startServer();
+    return   res
+            .status(200)
+            .json('pong')
+});
+
+export default app;

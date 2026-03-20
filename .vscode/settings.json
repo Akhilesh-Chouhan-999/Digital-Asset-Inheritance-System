@@ -1,0 +1,111 @@
+{
+  // 🎨 Theme & Icons
+  "workbench.colorTheme": "Atom One Dark",
+  "workbench.iconTheme": "material-icon-theme",
+
+  // 🔤 Font
+  "editor.fontFamily": "Fira Code, monospace",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 15,
+  "editor.fontWeight": "400",
+
+  // ✨ Editor UI
+  "editor.mouseWheelZoom": true,
+  "editor.minimap.enabled": true,
+  "editor.wordWrap": "on",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "editor.renderLineHighlight": "all",
+
+  // 🌈 Brackets
+  "editor.guides.bracketPairs": true,
+  "editor.bracketPairColorization.enabled": true,
+
+  // ⚡ Formatting
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 🧠 IntelliSense
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+
+  // 📦 JS/TS modern config
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "js/ts.suggest.autoImports": true,
+  "js/ts.preferences.importModuleSpecifier": "relative",
+
+  // 🧹 Auto Save
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // 🔍 Explorer cleanup
+  "files.exclude": {
+    "**/.git": true,
+    "**/node_modules": true
+  },
+
+  // 🔎 Search cleanup
+  "search.exclude": {
+    "**/node_modules": true
+  },
+
+  // 💻 Terminal
+  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.lineHeight": 1.3,
+  "terminal.integrated.fontFamily": "Fira Code, monospace",
+  "terminal.integrated.cursorBlinking": true,
+
+  // 📏 Indentation
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  // 🎨 CLEAN COLOR SET (no ugly red 🔥)
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": "keyword",
+        "settings": { "foreground": "#79c0ff" } // blue instead of red
+      },
+      {
+        "scope": "storage",
+        "settings": { "foreground": "#79c0ff" }
+      },
+      {
+        "scope": "entity.name.function",
+        "settings": { "foreground": "#7ee787" }
+      },
+      {
+        "scope": "string",
+        "settings": { "foreground": "#a5d6ff" }
+      },
+      {
+        "scope": "variable",
+        "settings": { "foreground": "#c9d1d9" }
+      },
+      {
+        "scope": "constant.numeric",
+        "settings": { "foreground": "#f2cc60" }
+      },
+      {
+        "scope": "entity.name.type",
+        "settings": { "foreground": "#c792ea" }
+      },
+      {
+        "scope": "comment",
+        "settings": {
+          "foreground": "#8b949e",
+          "fontStyle": "italic"
+        }
+      }
+    ]
+  },
+
+  // 🎯 UI polish
+  "workbench.colorCustomizations": {
+    "editorCursor.foreground": "#58a6ff",
+    "editor.lineHighlightBackground": "#1f2428",
+    "editorIndentGuide.activeBackground1": "#58a6ff"
+  }
+}
