@@ -6,6 +6,7 @@ import logger from "../utils/logger.js";
 import { CreatedResponse, OkResponse } from "../utils/successResponse.js";
 
 class AuthController {
+
   async register(req, res, next) {
     try {
       const { name, email, password } = req.body;
@@ -122,10 +123,9 @@ class AuthController {
 
   async resetPassword(req, res, next) {
     try {
+      
       const { token } = req.params;
       const { newPassword, confirmPassword } = req.body;
-
-      console.log(token , newPassword , confirmPassword)
 
       if (!token) {
         throw new ValidationError("Reset token is required");

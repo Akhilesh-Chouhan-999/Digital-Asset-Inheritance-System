@@ -8,6 +8,7 @@ import logger from "../utils/logger.js";
 import crypto from 'crypto';
 
 class AuthService {
+  
   async register(userData) {
 
     try {
@@ -193,9 +194,20 @@ class AuthService {
 
       // Generate password reset token
       const resetToken = crypto.randomBytes(32).toString('hex');
-      user.emailVerificationToken = resetToken; // Reusing this field for reset password
-      user.lastActiveAt = new Date();
-      await user.save();
+      
+      // Update user with reset token directly in database
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        { 
+          emailVerificationToken: resetToken,
+          lastActiveAt: new Date()
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        throw new NotFoundError('User not found');
+      }
 
       // Send password reset email
       await sendPasswordResetEmail(email, resetToken);
@@ -213,6 +225,8 @@ class AuthService {
     try {
       // Find user by reset token
       const user = await User.findOne({ emailVerificationToken: token });
+
+      console.log(user)
       if (!user) {
         throw new NotFoundError('Invalid or expired reset token');
       }
@@ -220,11 +234,20 @@ class AuthService {
       // Hash new password
       const hashedPassword = await hashPassword(newPassword);
 
-      // Update password
-      user.password = hashedPassword;
-      user.emailVerificationToken = null;
-      user.lastActiveAt = new Date();
-      await user.save();
+      // Update password and clear reset token directly in database
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        {
+          password: hashedPassword,
+          emailVerificationToken: null,
+          lastActiveAt: new Date()
+        },
+        { new: true }
+      );
+
+      if (!updatedUser) {
+        throw new NotFoundError('User not found');
+      }
 
       logger.info(`Password reset for user: ${user.email}`);
 
