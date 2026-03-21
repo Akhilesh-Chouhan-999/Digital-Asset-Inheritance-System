@@ -125,6 +125,8 @@ class AuthController {
       const { token } = req.params;
       const { newPassword, confirmPassword } = req.body;
 
+      console.log(token , newPassword , confirmPassword)
+
       if (!token) {
         throw new ValidationError("Reset token is required");
       }

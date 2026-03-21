@@ -114,6 +114,8 @@ class AuthService {
   async logout(userId) {
     try {
       // Update user lastActiveAt
+
+      console.log(userId)
       const user = await User.findByIdAndUpdate(
         userId,
         { lastActiveAt: new Date() },

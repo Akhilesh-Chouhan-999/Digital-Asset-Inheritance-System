@@ -1,11 +1,16 @@
 // Email Service
-// Functions: sendEmail(), sendVerificationEmail(), sendWarningEmail(), sendInheritanceNotification()
+// Functions: sendVerificationEmail(), sendWarningEmail(), sendInheritanceNotification(), sendPasswordResetEmail()
 
 import nodemailer from 'nodemailer';
 import logger from './logger.js';
-import { EMAIL_PASSWORD, EMAIL_USER } from './env.js';
+import { EMAIL_PASSWORD, EMAIL_USER, FRONTEND_URL } from './env.js';
 
-// Configure transporter (Gmail example)
+// Validate email configuration
+if (!EMAIL_USER || !EMAIL_PASSWORD) {
+  logger.error('Email configuration missing: EMAIL_USER or EMAIL_PASSWORD not set in .env');
+}
+
+// Configure transporter for Gmail with App Password
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -14,18 +19,27 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Verify transporter connection
+transporter.verify((error, success) => {
+  if (error) {
+    logger.error('Email transporter verification failed:', error.message);
+  } else {
+    logger.info('Email transporter verified successfully');
+  }
+});
+
 export const sendVerificationEmail = async (email, token) => {
   try {
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+    const verificationLink = `${FRONTEND_URL}/verify-email?token=${token}`;
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: EMAIL_USER,
       to: email,
       subject: 'Email Verification',
       html: `<p>Please verify your email by clicking <a href="${verificationLink}">here</a></p>`
     });
     logger.info(`Verification email sent to ${email}`);
-    
+
   } catch (error) {
     logger.error('Error sending verification email:', error);
     throw error;
@@ -35,7 +49,7 @@ export const sendVerificationEmail = async (email, token) => {
 export const sendWarningEmail = async (email, userName) => {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: EMAIL_USER,
       to: email,
       subject: 'Inactivity Warning from DAIS',
       html: `<p>Hello ${userName}, your account will trigger inheritance process due to inactivity.</p>`
@@ -50,7 +64,7 @@ export const sendWarningEmail = async (email, userName) => {
 export const sendInheritanceNotification = async (nomineeEmail, assets, userName) => {
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: EMAIL_USER,
       to: nomineeEmail,
       subject: 'Digital Asset Inheritance Notification',
       html: `<p>You have been notified as a nominee for ${userName}'s digital assets.</p>`
@@ -64,9 +78,9 @@ export const sendInheritanceNotification = async (nomineeEmail, assets, userName
 
 export const sendPasswordResetEmail = async (email, token) => {
   try {
-    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    const resetLink = `${FRONTEND_URL}/reset-password?token=${token}`;
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
+      from: EMAIL_USER,
       to: email,
       subject: 'Password Reset Request',
       html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`

@@ -4,6 +4,7 @@
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET_KEY } from './env.js';
 
 export const encryptData = (data, key) => {
   try {
@@ -54,7 +55,7 @@ export const verifyPassword = async (password, hash) => {
 
 export const generateToken = (payload, expiresIn = '7d') => {
   try {
-    return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });
+    return jwt.sign(payload, JWT_SECRET_KEY, { expiresIn });
   } catch (error) {
     throw new Error('Token generation failed: ' + error.message);
   }
@@ -62,7 +63,7 @@ export const generateToken = (payload, expiresIn = '7d') => {
 
 export const verifyJWT = (token) => {
   try {
-    return jwt.verify(token, process.env.JWT_SECRET);
+    return jwt.verify(token, JWT_SECRET_KEY);
   } catch (error) {
     throw new Error('Token verification failed: ' + error.message);
   }

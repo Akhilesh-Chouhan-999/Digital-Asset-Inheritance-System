@@ -4,6 +4,7 @@
 import jwt from 'jsonwebtoken';
 import { AuthenticationError } from '../utils/errorHandler.js';
 import logger from '../utils/logger.js';
+import { JWT_SECRET_KEY } from '../utils/env.js';
 
 export const verifyToken = (req, res, next) => {
   try {
@@ -12,7 +13,7 @@ export const verifyToken = (req, res, next) => {
       throw new AuthenticationError('No token provided');
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
     req.user = decoded;
     next();
   } catch (error) {
@@ -28,7 +29,7 @@ export const requireAuth = (req, res, next) => {
       throw new AuthenticationError('No token provided');
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET_KEY);
     req.user = decoded;
     next();
   } catch (error) {
