@@ -6,7 +6,7 @@
 // POST /api/auth/refresh-token
 // GET /api/auth/verify-email/:token
 // POST /api/auth/forgot-password
-// POST /api/auth/reset-password
+// POST /api/auth/reset-password/:token
 
 import express from 'express';
 import authController from '../controllers/AuthController.js';
@@ -32,7 +32,7 @@ router.get('/verify-email/:token', authController.verifyEmail);
 // POST /api/auth/forgot-password
 router.post('/forgot-password', authController.forgotPassword);
 
-// POST /api/auth/reset-password
-router.post('/reset-password', authController.resetPassword);
+// POST /api/auth/reset-password/:token
+router.post('/reset-password/:token', authController.resetPassword);
 
 export default router;

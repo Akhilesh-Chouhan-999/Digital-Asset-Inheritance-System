@@ -3,19 +3,21 @@
 
 import nodemailer from 'nodemailer';
 import logger from './logger.js';
+import { EMAIL_PASSWORD, EMAIL_USER } from './env.js';
 
 // Configure transporter (Gmail example)
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD
+    user: EMAIL_USER,
+    pass: EMAIL_PASSWORD
   }
 });
 
 export const sendVerificationEmail = async (email, token) => {
   try {
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: email,
@@ -23,6 +25,7 @@ export const sendVerificationEmail = async (email, token) => {
       html: `<p>Please verify your email by clicking <a href="${verificationLink}">here</a></p>`
     });
     logger.info(`Verification email sent to ${email}`);
+    
   } catch (error) {
     logger.error('Error sending verification email:', error);
     throw error;

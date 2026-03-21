@@ -1,14 +1,18 @@
 import mongoose from 'mongoose';
 import { MONGO_URI } from '../utils/env.js';
 import logger from '../utils/logger.js';
+import { OkResponse } from '../utils/successResponse.js';
 
 const connectDB = async () => {
  
   try {
 
-    await mongoose.connect(MONGO_URI);
+    const conn = await mongoose.connect(MONGO_URI);
 
     logger.info('Connected to MongoDB successfully');
+
+    return new OkResponse(conn , 'Connected to mongodb successfully') ; 
+
 
   } catch (error) {
 

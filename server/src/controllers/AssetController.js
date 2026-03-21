@@ -1,6 +1,7 @@
 // AssetController
 
 class AssetController {
+  
   async createAsset(req, res, next) {
     // Implementation
   }

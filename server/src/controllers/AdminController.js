@@ -1,6 +1,7 @@
 // AdminController
 
 class AdminController {
+  
   async getSystemStats(req, res, next) {
     // Implementation
   }
